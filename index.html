@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <title>حساب الاستهلاك الكهربي المنزلي مصر</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    :root {
+        --blue-version-color: #007bff;
+        --green-version-color: #28a745;
+        --main-font-size: 18px;
+    }
+    body {
+        direction: rtl;
+        font-size: var(--main-font-size);
+    }
+    .capp {
+        font-size: var(--main-font-size);
+    }
+    .cinput {
+        background-color: #fff;
+        outline: 0;
+        border: 1px solid var(--green-version-color);
+        padding: 5px;
+        color: #000;
+    }
+    .btn {
+        display: inline-block;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        padding: 6px 18px;
+        font-size: var(--main-font-size);
+        line-height: 1.5;
+        border-radius: 5px;
+        cursor: pointer;
+        outline: 0;
+        border: none;
+    }
+    #inputs th {
+        font-weight: normal;
+        color: var(--green-version-color);
+    }
+    #btnCalc {
+        color: #fff;
+        background-color: var(--green-version-color);
+        border-color: var(--green-version-color);
+    }
+    #result table {
+        width: 100%;
+    }
+    #result table th {
+        border: 1px solid var(--blue-version-color);
+        width: 40%;
+        color: var(--blue-version-color);
+        padding: 5px;
+        font-size: var(--main-font-size);
+    }
+    #result table td {
+        border: 1px solid var(--blue-version-color);
+        width: 60%;
+        color: #000;
+        padding: 5px;
+        font-size: var(--main-font-size);
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>حساب الاستهلاك الكهربي المنزلي مصر</h1>
+        <div id="inputs">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>الاستهلاك:</th>
+                        <td><input id="usage" placeholder="250" class="capp cinput" type="number"> <select id="usage_type" class="capp cinput"><option value="w">Watt</option><option value="kw">Kilo Watt</option></select></td>
+                    </tr>
+                    <tr>
+                        <th>الشريحة:</th>
+                        <td><select id="selectionBox" class="capp cinput"></select></td>
+                    </tr>
+                    <tr>
+                        <th>ساعات العمل:</th>
+                        <td><input id="hours" placeholder="6" class="capp cinput" type="number"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><button class="capp btn" id="btnCalc">احسب</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="result" style="display: none;">
+            <hr>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>الاستهلاك</th>
+                        <td id="rusage"></td>
+                    </tr>
+                    <tr>
+                        <th>الساعات</th>
+                        <td id="rhours"></td>
+                    </tr>
+                    <tr>
+                        <th>الشريحة</th>
+                        <td id="rseparation"></td>
+                    </tr>
+                    <tr>
+                        <th>السعر</th>
+                        <td id="rprice"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+// core
+const PRECISION = 2;
+const PRICESLIST = [0.38, 0.48, 0.65, 0.96, 1.18, 1.40, 1.18, 1.45];
+const USAGELIST = ["0-50", "51-100", "0-200", "201-350", "351-650", "651-1000", "0-999", "1000+"];
+function calc(w, h, s) {
+    w = parseFloat(w);
+    h = parseFloat(h);
+    s = parseInt(s);
+    let sp = PRICESLIST[s];
+    let kw = w/1000;
+    let cl = kw*h*sp;
+    return parseFloat(cl.toFixed(PRECISION));
+}
+// --------
+// app
+const ARABICHEADNUM = ["الاولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة", "السابعة", "الثامنة"];
+function getid(i) {
+    return document.getElementById(i);
+}
+function checkSeparatorNumber() {
+    let checkBool = (PRICESLIST.length == 8 && USAGELIST.length == 8 && ARABICHEADNUM.length == 8);
+    if(!checkBool) console.log("Separation Numbers are not equals!");
+    return checkBool;
+}
+// --------
+// view
+function showSeparatorSelectionBox() {
+    if(checkSeparatorNumber()) {
+        let el = getid('selectionBox');
+        for(let i = 0; i < USAGELIST.length; i++) {
+           let op = document.createElement("option");
+           op.text = "الشريحة " + ARABICHEADNUM[i] + " [" + USAGELIST[i] + "]";
+           op.value = i;
+           el.add(op);
+        }
+    }
+}
+function viewCalcResult(w, h, s) {
+    let p = calc(w, h, s);
+    getid('rusage').innerHTML = w + ' وات';
+    getid('rhours').innerHTML = h;
+    getid('rseparation').innerHTML = ARABICHEADNUM[s];
+    getid('rprice').innerHTML = p + ' جنيه مصري';
+}
+function calcOp() {
+    let usage = getid('usage').value;
+    let type = getid('usage_type').value;
+    let watt = usage;
+    if(type == "kw") watt = usage*1000;
+    else watt = usage;
+    let separation = getid('selectionBox').value;
+    let hours = getid('hours').value;
+    getid('result').style.display = 'block';
+    viewCalcResult(watt, hours, separation);
+}
+// --------
+showSeparatorSelectionBox();
+getid('btnCalc').onclick = calcOp;
+</script>
+</body>
+</html>
