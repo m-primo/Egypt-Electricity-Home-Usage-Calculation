@@ -1,0 +1,63 @@
+:root {
+    --blue-version-color: #007bff;
+    --green-version-color: #28a745;
+    --main-font-size: 18px;
+}
+body {
+    direction: rtl;
+    font-size: var(--main-font-size);
+}
+.capp {
+    font-size: var(--main-font-size);
+}
+.cinput {
+    background-color: #fff;
+    outline: 0;
+    border: 1px solid var(--green-version-color);
+    padding: 5px;
+    color: #000;
+}
+.btn {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 6px 18px;
+    font-size: var(--main-font-size);
+    line-height: 1.5;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+}
+#inputs th {
+    font-weight: normal;
+    color: var(--green-version-color);
+}
+#btnCalc {
+    color: #fff;
+    background-color: var(--green-version-color);
+    border-color: var(--green-version-color);
+}
+#result table {
+    width: 100%;
+}
+#result table th {
+    border: 1px solid var(--blue-version-color);
+    width: 40%;
+    color: var(--blue-version-color);
+    padding: 5px;
+    font-size: var(--main-font-size);
+}
+#result table td {
+    border: 1px solid var(--blue-version-color);
+    width: 60%;
+    color: #000;
+    padding: 5px;
+    font-size: var(--main-font-size);
+}
