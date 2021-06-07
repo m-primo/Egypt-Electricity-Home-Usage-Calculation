@@ -8,3 +8,6 @@ Arabic Version Only
 3. All the levels (8).
 
 All you have to do is enter your usage (by watt or kilowatt), select the level, then enter the work hours, and click calculate.
+
+# View
+https://m-primo.github.io/Egypt-Electricity-Home-Usage-Calculation/
